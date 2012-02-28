@@ -17,3 +17,4 @@ twitCred <- OAuthFactory$new(consumerKey=consumerKey,
 twitCred$handshake()
 ###After entering the PIN provided by twitter, run the following command.
 registerTwitterOAuth(twitCred)
+
