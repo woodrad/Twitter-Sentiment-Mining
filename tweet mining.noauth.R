@@ -94,7 +94,7 @@ load(file="siue.tweets.RData")
 # Extract the text of the tweet for mining.
 tweetText <-lapply(siue.tweets, function(x) x$getText())
 # Remove non-UTF8 characters.
-tweetText <- subset(tweetText, !grepl("[\x80-\xFF]", tweetText))
+tweetText <- enc2utf8(gsub("[\U80-\UFF]", "", tweetText, useBytes=TRUE))
 
 # Import sentiment lexicons. If the situation demands, add in domain-specific jargon.
 positiveWords <- scan('Hu and Liu Sentiment Lexicon/positive-words.txt', 

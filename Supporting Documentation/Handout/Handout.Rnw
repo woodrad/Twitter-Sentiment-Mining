@@ -8,7 +8,7 @@
 \setlength{\headheight}{15.2pt}
 \pagestyle{fancy}
 \rhead[\small{Page \thepage\ of \pageref{LastPage}}]{\small{Page \thepage\ of \pageref{LastPage}}}
-\cfoot[\small{Presentation under a Creative Commons license. See the \href{https://github.com/woodrad/Twitter-Sentiment-Mining}{GitHub} project page for information..}]{\small{Presentation under a Creative Commons license. See the \href{https://github.com/woodrad/Twitter-Sentiment-Mining}{GitHub} project page for information.}}
+\cfoot[\small{Presentation under a Creative Commons license.\\ See \url{https://github.com/woodrad/Twitter-Sentiment-Mining} for more information.}]{\small{Presentation under a Creative Commons license.\\ See \url{https://github.com/woodrad/Twitter-Sentiment-Mining} for more information.}}
 \def\contentsname{}
 \usepackage[noae]{Sweave}
 \begin{document}
@@ -28,16 +28,16 @@
 %\newpage
 
 \section{Motivation}
-We endevor to answer the questions: Why aren't people buying my widgets? Are people saying bad things about me? Why are the students of Southern Illinois University Edwardsville (\href{http://www.siue.edu/}{SIUE}) unhappy?
+We endeavor to answer the questions: Why aren't people buying my widgets? Are people saying bad things about me? Why are the students of Southern Illinois University Edwardsville (\href{http://www.siue.edu/}{SIUE}) unhappy?
 
-These are classic questions concerning not only product marketers, but statisticians. What convinces people to tell us what they think, what they own, what they will buy, where they are, and who they are? How do we get honest answers? What can we infer from a large number of these answers?
+These are classic questions concerning not only product marketers and statisticians: what convinces people to tell us what they think, what they own, what they will buy, where they are, and who they are? How do we get honest answers? What can we infer from a large number of these answers?
 
 There is some good news yet because...
 
 \subsection{300 Million People Are Here To Chat!}
-Twitter is a ``microblogging'' service that facilitates communication. Each message, a ``tweet'', contains no more than 140 characters. \href{http://www.wolframalpha.com/input/?i=number%20of%20Twitter%20users}{300 million} people use \href{http://Twitter.com}{Twitter}. But how do they use it? And why? 
+Twitter is a ``microblogging'' service that facilitates small bits of communication. Each message, a ``tweet'', contains no more than 140 characters. \href{http://www.wolframalpha.com/input/?i=number%20of%20Twitter%20users}{300 million} people use \href{http://Twitter.com}{Twitter}. But how do they use it? Why? How does this help us? 
 
-Twitter has some use cases and features that result in a nice corpus. Twitter is often used for consumption of news stories and participation in current events. Many people also use twitter to express emotional states: often complaining about and praising places, products, and services. Since tweets contain no more than 140 characters, finding relevant tweets is normally a fairly easy task. Twitter's automatic grouping and ``hashtags'', tags that group topics and start with a hash mark (\#), enable us find what we want with relative ease.
+Twitter has some use cases and features that result in a nice corpus. It is often used for consumption of news stories and participation in current events. Many people also use Twitter to express emotional states: often complaining about or praising places, products, and services. Since tweets contain no more than 140 characters, finding relevant tweets is normally a fairly easy task. Twitter's automatic grouping and ``hashtags'', tags that group topics and start with a hash mark (\#), enable us find what we want with relative ease.
 
 In my example, I will use tweets about SIUE. Tweets were selected from the stream based on the occurrence of the terms ``SIUE'' and ``\#onlyatsiue'', the latter having spent some time as a major regional trending topic.
 
@@ -55,7 +55,7 @@ Our strategy will consist of the following steps.
 \begin{enumerate}
 \item Sip from the stream of tweets using \href{http://cran.r-project.org/web/packages/twitteR/index.html}{twitteR} and \href{http://cran.r-project.org/web/packages/ROAuth/index.html}{ROAuth} to build a corpus.
 
-\item Discover your new corpus.
+\item Discover our new corpus.
 
 \item Select a sentiment lexicon. Download it and load it into R.
 
@@ -65,7 +65,7 @@ Our strategy will consist of the following steps.
 \end{enumerate}
 
 \subsection{Building a Corpus}
-First, we sip from the stream to build a corpus. Be aware that we can only sip, and not guzzle, due to Twitter's \href{https://dev.twitter.com/docs/rate-limiting}{rate limiting} (note there is no limit on the number of tweets you post using twitteR). The code below loads some previously-downloaded tweets. Code to append new tweets from the stream is commented out and can be ran when you want to expand the corpus. Note that by registering with Twitter's developer program, you can get API keys used to increase the rate limit for your IP/key combination.
+First, we sip from the stream to build a corpus. Be aware that we can only sip, and not guzzle, due to Twitter's \href{https://dev.twitter.com/docs/rate-limiting}{rate limiting} (note there is no limit on the number of tweets you post using twitteR). The code below loads some previously-downloaded tweets. Code to append new tweets from the stream is commented out and can be run when you want to expand the corpus. Note that by registering with Twitter's developer program, you can get API keys used to increase the rate limit for your IP/key combination.
 
 <<socialsipper>>=
 # Load needed libraries to allow R to interface with twitter and 
@@ -77,7 +77,7 @@ require(ROAuth)
 # This means that the rate of downloading tweets will be limited.
 # The following code should NEVER be shared. It includes private keys 
 # that authenticate against the twitter API. This code was taken from the 
-# twitteR doccumentation. Run the code from this block to the next comment.
+# twitteR documentation. Run the code from this block to the next comment.
 #
 # reqURL <- "https://api.twitter.com/oauth/request_token"
 # accessURL <- "https://api.twitter.com/oauth/access_token"
@@ -112,10 +112,10 @@ tail(siue.tweets, 2)
 
 So far we have some anecdotes and can probably infer that their university had a power outage, is a goose sanctuary, and has a bit of a wasp problem. But what kind of sentiments are associated with SIUE in the aggregate?
 
-\subsection{Loading Lexicons; Preparing Tweets}
-Before we can preform more analysis on the aggregate sentements within these tweets, we need to first download and load a sentiment lexicon into R. Then we need to modify the corpus so that we can analyze it.
+\subsection{Loading Lexicons; Tweaking Tweets}
+Before we can preform more analysis on the aggregate sentiments within these tweets, we need to first download and load a sentiment lexicon into R. Then we need to modify the corpus so that we can analyze it.
 
-The Sentiment Lexicon for this project is taken from Hu and Liu's opinion lexicon. See \url{http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html} for source information and \url{http://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar} to download their opinion lexicon. The raw text is also included in the Git repository for this project.
+The Sentiment Lexicon for this project is taken from Hu and Liu's opinion lexicon. See\\ \url{http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html} for source information. You can find download their opinion lexicon from\\ \url{http://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar}. The raw text is also included in the \href{https://github.com/woodrad/Twitter-Sentiment-Mining}{GitHub repository} for this project.
 
 <<lexload>>=
 # Import sentiment lexicons. If the situation demands, 
@@ -129,17 +129,19 @@ negativeWords <-
        what='character', comment.char=';')
 @
 
-Now we need to restructure the corpus so we can preform the analysis as preformed in this project.
+Now we need to restructure the corpus so we can preform some analysis.
 
 <<tweetply>>=
 # Extract the text of the tweet for mining.
 tweetText <-lapply(siue.tweets, function(x) x$getText())
-# Remove non-UTF8 characters.
-tweetText <- subset(tweetText, !grepl("[\x80-\xFF]", tweetText))
+# Remove non-UTF8 tweets.
+tweetText <- enc2utf8(gsub("[\U80-\UFF]", "", tweetText, useBytes=TRUE))
 @
 
+Great. The tweets are ready to be scored.
+
 \subsection{Scoring Tweets}
-The function we are using is mainly taken from \href{http://www.slideshare.net/jeffreybreen/r-by-example-mining-twitter-for}{``R by example: mining Twitter for consumer
+The function we are using to score tweets is mainly taken from \href{http://www.slideshare.net/jeffreybreen/r-by-example-mining-twitter-for}{``R by example: mining Twitter for consumer
 attitudes towards airlines''} by Jeffrey Breen. If you want to see the function, simply look at the R code in the GitHub project or in the Rnw file that comes with this PDF.
 
 <<functionload,echo=FALSE>>=
@@ -205,14 +207,11 @@ score.sentiment = function(sentences, positive.words, negative.words, .progress=
 tweetScores <- score.sentiment(tweetText, positiveWords, negativeWords)
 @
 
+The scoring is complete.
 
 \subsection{Summarizing Your Results}
-Now we sumarize the results of our mining. This is a pretty simple way to summarize the scores, but it gives the insight that tweets about SIUE from this sample were very slightly positive.
-<<summary>>=
-# Summarize and graph histogram with ggplot2.
-summary(tweetScores$score)
-@
-
+Now we summarize the results of our mining with a humble histogram. I have selected \verb+ggplot2+ for this task, mainly because it is elegant by default and has a function (\verb+qplot+) that is intuitive to native R graphics users.
+\newpage
 \begin{figure}[htbp]
 \centering
 <<fig=TRUE>>=
@@ -222,19 +221,29 @@ qplot(score, data=tweetScores, geom="histogram", binwidth=1)
 \caption{Histogram of tweet scores}
 \end{figure}
 
-\section{Limitations}
-While we have done lots of stuff, R isn't perfect and this approach is simplistic.
+From exploring the data, we know that SIUE has tense animal-human relations and had a recent power outage and fire alarm. Our summary shows that this sample of tweets about SIUE are (very) slightly positive. Combined with input from subject matter experts, further analysis, and insights from other data, we can start to get a picture of what life is like at SIUE.
 
-\subsection{Bags of Words Approach}
-- Irony and function used. Give example.
+\section{Limitations}
+Limitations exist in the methodology I have presented. One class of limitations is related to the over-simplified model implicitly used and the other is related to R.
+
+\subsection{Limitations of Methodology}
+We used a bag-of-words model when we analyzed the sentiment of the tweets. In the process we disregarded grammar and word order and ranked the tweets strictly based on the words the tweet contained. There are other ways to process the tweets that give more sophistication to the analysis.
+
+Additionally, the function used to score the tweets is completely deaf to irony. For example, the (fabricated) tweet
+\begin{quote}
+Impressed and amazed by the peerless leadership of SIUE in the domain of mediocrity.
+\end{quote}
+actually receives a score of +2. While all these problems have solutions or techniques to mitigate them, that is beyond the scope of this presentation.
 
 \subsection{P\emph{R}oblems}
-Problems go here. Like limitations of R and stuff.
+Another source of trouble is R itself. When using R for text mining and text processing, one often feels as if one is reinventing the wheel. Other languages like Python benefit from existing frameworks like \href{http://www.nltk.org/}{NLTK} and \href{http://www.crummy.com/software/BeautifulSoup/}{Beautiful Soup}. That being said, there are some packages that make text mining easier in R. \href{http://rss.acs.unt.edu/Rdoc/library/tm/html/00Index.html}{\verb+tm} is a good example of a package that makes text mining easier. 
 
-\subsection{Requirements}
-For thie project, we stand on the shoulders of giants (as always the case when using R). We have received aid and comfort from the packages \verb+plyr+, \verb+stringr+, \verb+twitteR+, \verb+ggplot2+ and \verb+ROAuth+. You will need to have these installed for the code to run. For more information on these packages, see their associated help pages and vignettes.
+\section{Credits}
+To complete this project, I stood on the shoulders of giants (as always the case when using R). We have received aid and comfort from the packages \verb+plyr+, \verb+stringr+, \verb+twitteR+, \verb+ggplot2+ and \verb+ROAuth+. For more information on these packages, see their associated help pages and vignettes.
+
+We also used the sentiment lexicons of Minqing Hu and Bing Liu in order to do the scoring for our analysis. In the process of scoring tweets, much inspiration was taken from Jeffrey Breen's presentation. We have all been helped more than we can express by the members of the R community.
 
 \section{License}
-``Mining Twitter Using R'' by \href{http://5lbs.org}{Mathew Woodyard} is licensed under a \href{http://creativecommons.org/licenses/by-nc-sa/3.0/us/}{Creative Commons Attribution-NonCommercial-ShareAlike 3.0 United States License}. My GitHub project found at \url{https://github.com/woodrad/Twitter-Sentiment-Mining} is under the same license, with the exception of the documentation written by others, which is under the (\href{https://en.wikipedia.org/wiki/Artistic_License}{Artistic}) license listed in the documentation. Permissions beyond the scope of this license may be available at \url{http://5lbs.org}.
+``Mining Twitter Using R'' by \href{http://5lbs.org}{Mathew Woodyard} is licensed under a \href{http://creativecommons.org/licenses/by-nc-sa/3.0/us/}{Creative Commons Attribution-NonCommercial-ShareAlike 3.0 United States License}. My GitHub project found at\\ \url{https://github.com/woodrad/Twitter-Sentiment-Mining} is under the same license, with the exception of the documentation written by others, which is under the (\href{https://en.wikipedia.org/wiki/Artistic_License}{Artistic}) license listed in the documentation. Permissions beyond the scope of this license may be available at \url{http://5lbs.org}.
 
 \end{document}
