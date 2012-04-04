@@ -67,48 +67,58 @@ Our strategy will consist of the following steps.
 \subsection{Building a Corpus}
 First, we sip from the stream to build a corpus. Be aware that we can only sip, and not guzzle, due to Twitter's \href{https://dev.twitter.com/docs/rate-limiting}{rate limiting} (note there is no limit on the number of tweets you post using twitteR). The code below loads some previously-downloaded tweets. Code to append new tweets from the stream is commented out and can be ran when you want to expand the corpus. Note that by registering with Twitter's developer program, you can get API keys used to increase the rate limit for your IP/key combination.
 
-<<socialsipper>>=
-# Load needed libraries to allow R to interface with twitter and 
-# interface with the API using OAuth.
-require(twitteR)
-require(ROAuth)
-
-# The code below does not work due to a current bug in twitteR. 
-# This means that the rate of downloading tweets will be limited.
-# The following code should NEVER be shared. It includes private keys 
-# that authenticate against the twitter API. This code was taken from the 
-# twitteR doccumentation. Run the code from this block to the next comment.
-#
-# reqURL <- "https://api.twitter.com/oauth/request_token"
-# accessURL <- "https://api.twitter.com/oauth/access_token"
-# authURL <- "https://api.twitter.com/oauth/authorize"
-# consumerKey <- "keygoeshere"
-# consumerSecret <- "keygoeshere"
-# twitCred <- OAuthFactory$new(consumerKey=consumer.key,
-#                              consumerSecret=consumer.secret,
-#                              requestURL=reqURL,
-#                              accessURL=accessURL,
-#                              authURL=authURL)
-# twitCred$handshake()
-# 
-# After entering the PIN provided by twitter, run the following command.
-# 
-# registerTwitterOAuth(twitCred)
-
-# Load saved tweets.
-load(file="../../siue.tweets.RData")
-
-# Uncomment to add hot new tweets.
-# siueTweets <- append(siue.tweets, searchTwitter('siue', n=1500))
-# siueTweets <- append(siue.tweets, searchTwitter('#onlyatsiue', n=1500))
-@
+\begin{Schunk}
+\begin{Sinput}
+> # Load needed libraries to allow R to interface with twitter and 
+> # interface with the API using OAuth.
+> require(twitteR)
+> require(ROAuth)
+> # The code below does not work due to a current bug in twitteR. 
+> # This means that the rate of downloading tweets will be limited.
+> # The following code should NEVER be shared. It includes private keys 
+> # that authenticate against the twitter API. This code was taken from the 
+> # twitteR doccumentation. Run the code from this block to the next comment.
+> #
+> # reqURL <- "https://api.twitter.com/oauth/request_token"
+> # accessURL <- "https://api.twitter.com/oauth/access_token"
+> # authURL <- "https://api.twitter.com/oauth/authorize"
+> # consumerKey <- "keygoeshere"
+> # consumerSecret <- "keygoeshere"
+> # twitCred <- OAuthFactory$new(consumerKey=consumer.key,
+> #                              consumerSecret=consumer.secret,
+> #                              requestURL=reqURL,
+> #                              accessURL=accessURL,
+> #                              authURL=authURL)
+> # twitCred$handshake()
+> # 
+> # After entering the PIN provided by twitter, run the following command.
+> # 
+> # registerTwitterOAuth(twitCred)
+> 
+> # Load saved tweets.
+> load(file="../../siue.tweets.RData")
+> 
+> # Uncomment to add hot new tweets.
+> # siueTweets <- append(siue.tweets, searchTwitter('siue', n=1500))
+> # siueTweets <- append(siue.tweets, searchTwitter('#onlyatsiue', n=1500))
+\end{Sinput}
+\end{Schunk}
 
 \subsection{Exploring Your Hot New Corpus}
 Now that we have the corpus loaded, let's explore what people from SIUE are saying about their university.
 
-<<corpusexplore>>=
-tail(siue.tweets, 2)
-@
+\begin{Schunk}
+\begin{Sinput}
+> tail(siue.tweets, 2)
+\end{Sinput}
+\begin{Soutput}
+[[1]]
+[1] "ktdare: Fire alarm? Check. Short power outage? Check. #onlyatsiue"
+
+[[2]]
+[1] "ChrisHeinle2211: thought a goose was going to attack me #OnlyAtSiue"
+\end{Soutput}
+\end{Schunk}
 
 So far we have some anecdotes and can probably infer that their university had a power outage, is a goose sanctuary, and has a bit of a wasp problem. But what kind of sentiments are associated with SIUE in the aggregate?
 
@@ -117,108 +127,63 @@ Before we can preform more analysis on the aggregate sentements within these twe
 
 The Sentiment Lexicon for this project is taken from Hu and Liu's opinion lexicon. See \url{http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html} for source information and \url{http://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar} to download their opinion lexicon. The raw text is also included in the Git repository for this project.
 
-<<lexload>>=
-# Import sentiment lexicons. If the situation demands, 
-# add in domain-specific words.
-positiveWords <- 
-  scan('../../Hu and Liu Sentiment Lexicon/positive-words.txt',
-       what='character', comment.char=';')
-
-negativeWords <- 
-  scan('../../Hu and Liu Sentiment Lexicon/negative-words.txt',
-       what='character', comment.char=';')
-@
+\begin{Schunk}
+\begin{Sinput}
+> # Import sentiment lexicons. If the situation demands, 
+> # add in domain-specific words.
+> positiveWords <- 
++   scan('../../Hu and Liu Sentiment Lexicon/positive-words.txt',
++        what='character', comment.char=';')
+> negativeWords <- 
++   scan('../../Hu and Liu Sentiment Lexicon/negative-words.txt',
++        what='character', comment.char=';')
+\end{Sinput}
+\end{Schunk}
 
 Now we need to restructure the corpus so we can preform the analysis as preformed in this project.
 
-<<tweetply>>=
-# Extract the text of the tweet for mining.
-tweetText <-lapply(siue.tweets, function(x) x$getText())
-# Remove non-UTF8 characters.
-tweetText <- subset(tweetText, !grepl("[\x80-\xFF]", tweetText))
-@
+\begin{Schunk}
+\begin{Sinput}
+> # Extract the text of the tweet for mining.
+> tweetText <-lapply(siue.tweets, function(x) x$getText())
+> # Remove non-UTF8 characters.
+> tweetText <- subset(tweetText, !grepl("[\x80-\xFF]", tweetText))
+\end{Sinput}
+\end{Schunk}
 
 \subsection{Scoring Tweets}
 The function we are using is mainly taken from \href{http://www.slideshare.net/jeffreybreen/r-by-example-mining-twitter-for}{``R by example: mining Twitter for consumer
 attitudes towards airlines''} by Jeffrey Breen. If you want to see the function, simply look at the R code in the GitHub project or in the Rnw file that comes with this PDF.
 
-<<functionload,echo=FALSE>>=
-score.sentiment = function(sentences, positive.words, negative.words, .progress='none')
-{
-  
-  require(plyr)
-  
-  require(stringr)
-  
-  
-  # we got a vector of sentences. plyr will handle a list or a vector as an "l" for us
-  
-  # we want a simple array of scores back, so we use "l" + "a" + "ply" = laply:
-  
-  scores = laply(sentences, function(sentence, positive.words, negative.words) {
-    
-    
-    
-    
-    # clean up sentences with R's regex-driven global substitute, gsub():
-    
-    
-    sentence = gsub('[[:punct:]]', '', sentence)
-    
-    
-    sentence = gsub('[[:cntrl:]]', '', sentence)
-    
-    
-    sentence = gsub('\\d+', '', sentence)
-    
-    
-    # and convert to lower case:
-    
-    
-    sentence = tolower(sentence)
-    # split into words. str_split is in the stringr package
-    word.list = str_split(sentence, '\\s+')
-    # sometimes a list() is one level of hierarchy too much
-    words = unlist(word.list)
-    # compare our words to the dictionaries of positive & negative terms
-    positive.matches = match(words, positive.words)
-    negative.matches = match(words, negative.words)
-    
-    
-    
-    
-    
-    # match() returns the position of the matched term or NA
-    # we just want a TRUE/FALSE:
-    positive.matches = !is.na(positive.matches)
-    negative.matches = !is.na(negative.matches)
-    # and conveniently enough, TRUE/FALSE will be treated as 1/0 by sum():
-    score = sum(positive.matches) - sum(negative.matches)
-    
-    return(score)
-  }, positive.words, negative.words, .progress=.progress )
-  scores.df = data.frame(score=scores, text=sentences)
-  return(scores.df)
-}
-@
-<<scoretweets>>=
-tweetScores <- score.sentiment(tweetText, positiveWords, negativeWords)
-@
+\begin{Schunk}
+\begin{Sinput}
+> tweetScores <- score.sentiment(tweetText, positiveWords, negativeWords)
+\end{Sinput}
+\end{Schunk}
 
 
 \subsection{Summarizing Your Results}
 Now we sumarize the results of our mining. This is a pretty simple way to summarize the scores, but it gives the insight that tweets about SIUE from this sample were very slightly positive.
-<<summary>>=
-# Summarize and graph histogram with ggplot2.
-summary(tweetScores$score)
-@
+\begin{Schunk}
+\begin{Sinput}
+> # Summarize and graph histogram with ggplot2.
+> summary(tweetScores$score)
+\end{Sinput}
+\begin{Soutput}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-4.0000  0.0000  0.0000  0.1426  0.0000  5.0000 
+\end{Soutput}
+\end{Schunk}
 
 \begin{figure}[htbp]
 \centering
-<<fig=TRUE>>=
-require(ggplot2)
-qplot(score, data=tweetScores, geom="histogram", binwidth=1)
-@
+\begin{Schunk}
+\begin{Sinput}
+> require(ggplot2)
+> qplot(score, data=tweetScores, geom="histogram", binwidth=1)
+\end{Sinput}
+\end{Schunk}
+\includegraphics{Handout-008}
 \caption{Histogram of tweet scores}
 \end{figure}
 

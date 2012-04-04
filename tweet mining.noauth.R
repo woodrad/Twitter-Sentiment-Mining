@@ -63,8 +63,9 @@ score.sentiment = function(sentences, positive.words, negative.words, .progress=
 
 
 # Load needed libraries to allow R to interface with twitter and interface with the API using OAuth.
-library(twitteR)
-library(ROAuth)
+require(twitteR)
+require(ROAuth)
+require(ggplot2)
 
 # The code below does not work due to a current bug in twitteR. This means that the rate of downloading tweets will be limited.
 # ###The following code should NEVER be shared. It includes private keys that authenticate against the twitter API.
@@ -91,7 +92,9 @@ load(file="siue.tweets.RData")
 # siueTweets <- append(siue.tweets, searchTwitter('#onlyatsiue', n=1500))
 
 # Extract the text of the tweet for mining.
-tweetText <-lapply(siue.tweets, function(x) x$getText() )
+tweetText <-lapply(siue.tweets, function(x) x$getText())
+# Remove non-UTF8 characters.
+tweetText <- subset(tweetText, !grepl("[\x80-\xFF]", tweetText))
 
 # Import sentiment lexicons. If the situation demands, add in domain-specific jargon.
 positiveWords <- scan('Hu and Liu Sentiment Lexicon/positive-words.txt', 
@@ -102,3 +105,7 @@ negativeWords <- scan('Hu and Liu Sentiment Lexicon/negative-words.txt',
 
 # Score tweets and summarize.
 tweetScores <- score.sentiment(tweetText, positiveWords, negativeWords, .progress='text')
+
+# Summarize and graph histogram with ggplot2.
+summary(tweetScores$score)
+qplot(score, data=tweetScores, geom="histogram", binwidth=1)
