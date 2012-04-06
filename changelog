@@ -1,0 +1,3 @@
+6. April 2012. I changed the folder structure and decided to fully commit to this project using the literate approach. Accordingly I removed the standalone R scripts and replaced them with a tangled Rnw and a woven PDF. Updated README, added changelog and knownbugs. Updated the wiki for the project to include upcoming features.
+
+4. April 2012. I pushed the first release of this project. This evening a presentation of the project was given at the St. Louis R Users group.

@@ -8,7 +8,7 @@
 \setlength{\headheight}{15.2pt}
 \pagestyle{fancy}
 \rhead[\small{Page \thepage\ of \pageref{LastPage}}]{\small{Page \thepage\ of \pageref{LastPage}}}
-\cfoot[\small{Presentation under a Creative Commons license.\\ See \url{https://github.com/woodrad/Twitter-Sentiment-Mining} for more information.}]{\small{Presentation under a Creative Commons license.\\ See \url{https://github.com/woodrad/Twitter-Sentiment-Mining} for more information.}}
+\cfoot[\small{Under a Creative Commons license.\\ See \url{https://github.com/woodrad/Twitter-Sentiment-Mining} for more information.}]{\small{Under a Creative Commons license.\\ See \url{https://github.com/woodrad/Twitter-Sentiment-Mining} for more information.}}
 \def\contentsname{}
 \usepackage[noae]{Sweave}
 \begin{document}
@@ -16,16 +16,12 @@
 \begin{center}
 \huge{\bf{Mining Twitter Using R}}
 
-\normalsize{Presented to the St. Louis R Users Group}
-
 \normalsize{By Mathew Woodyard}
 
-\normalsize{\today}
+\normalsize{Last Modified \today}
 \end{center}
 \hrule
-%\tableofcontents
 
-%\newpage
 
 \section{Motivation}
 We endeavor to answer the questions: Why aren't people buying my widgets? Are people saying bad things about me? Why are the students of Southern Illinois University Edwardsville (\href{http://www.siue.edu/}{SIUE}) unhappy?
@@ -43,7 +39,7 @@ In my example, I will use tweets about SIUE. Tweets were selected from the strea
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{tweet.png}
+\includegraphics{Images/tweet.png}
 \caption{A tweet in its natural habitat}
 \end{figure}
 
@@ -96,7 +92,7 @@ require(ROAuth)
 # registerTwitterOAuth(twitCred)
 
 # Load saved tweets.
-load(file="../../siue.tweets.RData")
+load(file="Data/siue.tweets.RData")
 
 # Uncomment to add hot new tweets.
 # siueTweets <- append(siue.tweets, searchTwitter('siue', n=1500))
@@ -121,11 +117,11 @@ The Sentiment Lexicon for this project is taken from Hu and Liu's opinion lexico
 # Import sentiment lexicons. If the situation demands, 
 # add in domain-specific words.
 positiveWords <- 
-  scan('../../Hu and Liu Sentiment Lexicon/positive-words.txt',
+  scan('Hu and Liu Sentiment Lexicon/positive-words.txt',
        what='character', comment.char=';')
 
 negativeWords <- 
-  scan('../../Hu and Liu Sentiment Lexicon/negative-words.txt',
+  scan('Hu and Liu Sentiment Lexicon/negative-words.txt',
        what='character', comment.char=';')
 @
 
