@@ -1,4 +1,4 @@
-The goal of this project is to provide a simple example of mining tweets for sentiments using a bag of words approach to model the tweets. This project is made using the literate approach to programming and thus composed of the tangled Rnw file and the woven PDF.  
+The goal of this project is to provide a simple example of mining tweets for sentiments using a bag of words approach. This project is made using the literate approach to programming and is composed of the tangled Rnw file and the woven PDF.  
 
 Major changes are recorded in the changelog file contained in this repository. Known bugs are contained in the knownbugs file.
 
