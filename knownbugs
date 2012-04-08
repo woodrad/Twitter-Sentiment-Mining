@@ -1,1 +1,0 @@
-6. April 2012. A regex in the current version of the Tweet Mining.Rnw file does not work on all platforms. On line 138, "[\U80-\UFF]" works on Windows and OSX, but not on Ubuntu. "[\x80-\xFF]", however, does work. This bug causes the build of the Rnw to fail on Ubuntu. This line to be rewritten when I solve the issue.
