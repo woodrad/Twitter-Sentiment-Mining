@@ -1,6 +1,6 @@
 The goal of this project is to provide a simple example of mining tweets for sentiments using a bag of words approach. This project is made using the literate approach to programming and is composed of the tangled Rnw file and the woven PDF.  
 
-Major changes are recorded in the changelog file contained in this repository. Known bugs are contained in the knownbugs file.
+Major changes are recorded in the changelog file contained in this repository. Known bugs are reported on the GitHub issues page for this project.
 
 For the build to succeed, you will need to have the following R packages installed: plyr, stringr, twitteR, ggplot2, and ROauth. You also need to have Sweave set up properly.
 
