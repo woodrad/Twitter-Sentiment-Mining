@@ -1,3 +1,7 @@
+This project has many problems. I plan to fix none of them. The code is rough. From what I can tell, the code no longer pulls down tweets as planned. Also, there are tons of better ways to do what this project was aimed to do. I hope you still find some use in it.
+
+---
+
 The goal of this project is to provide a simple example of mining tweets for sentiments using a bag of words approach. This project is made using the literate approach to programming and is composed of the tangled Rnw file and the woven PDF.  
 
 Major changes are recorded in the changelog file contained in this repository. Known bugs are reported on the GitHub issues page for this project.
