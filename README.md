@@ -1,4 +1,4 @@
-This project has many problems. I plan to fix none of them. The code is rough. From what I can tell, the code no longer pulls down tweets as planned. Also, there are tons of better ways to do what this project was aimed to do. I hope you still find some use in it.
+This codebase is no longer maintained. From what I can tell, the code no longer pulls down tweets as planned. I hope you still find some use in it.
 
 ---
 
